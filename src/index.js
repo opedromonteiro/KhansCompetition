@@ -2,44 +2,75 @@ import { Hikaro } from "./entities/fighters/Hikaro.js";
 import { Roshi } from "./entities/fighters/Roshi.js";
 import { Stage } from "./entities/Stage.js";
 import { FpsCounter } from "./entities/FpsCounter.js";
+import { STAGE_FLOOR } from "./constants/stage.js";
+import { FighterDirection, FighterState } from "./constants/fighter.js";
 
-const GameViewport = {
-    WIDTH: 384,
-    HEIGHT: 224,
-};
+function populateMoveDropdown()  {
+    const dropdown = document.getElementById('state-dropdown');
+
+    Object.entries(FighterState).forEach(([, value])=> {
+        const option = document.createElement('option');
+        option.setAttribute('value', value);
+        option.innerText = value;
+        dropdown.appendChild(option);
+    });
+}
+
+function handleFormSubmit(event, fighters)  {
+    event.preventDefault();
+
+    const selectedCheckboxes = Array
+        .from(event.target.querySelectorAll('imput:checked'))
+        .map(checkbox => checkbox.value);
+    const options = event.target.querySelector('select');
+
+    fighters.forEach(fighter =>    {
+        if  (selectedCheckboxes.includes(fighter.name)) {
+            fighter.changeState(options.value);
+        }
+    });
+}
 
 window.addEventListener('load', function () {
+    populateMoveDropdown
     const canvasEl = document.querySelector('canvas');
     const context = canvasEl.getContext('2d');
-
-    canvasEl.width = GameViewport.WIDTH;
-    canvasEl.height = GameViewport.HEIGHT;
+    
+    context.imageSmoothingEnabled = false;
+    
+    const fighters = [
+        new Hikaro(104, STAGE_FLOOR, FighterDirection.LEFT),
+        new Roshi(280, STAGE_FLOOR, FighterDirection.RIGHT),
+    ]
 
     const entities = [
         new Stage(),
-        new Hikaro(80, 110, 150),
-        new Roshi(80, 110, -150),
+        ...fighters,
         new FpsCounter(),
     ];
 
-    let previousTime = 0;
-    let secondsPassed = 0;
+    let frameTime = {
+        previous: 0,
+        secondsPassed: 0,
+    };
 
     function frame(time) {
         window.requestAnimationFrame(frame);
-        secondsPassed = (time - previousTime) / 1000;
-        previousTime = time;
-
+        
+        frameTime = {
+            secondsPassed: (time - frameTime.previous) / 1000,
+            previous: time,
+        }
         for (const entity of entities) {
-            entity.update(secondsPassed, context);
+            entity.update(frameTime, context);
         }
 
         for (const entity of entities) {
             entity.draw(context);
         }
-        
-        
     }
+    
+    this.document.addEventListener('submit', (event) => handleFormSubmit(event, fighters));
     
     window.requestAnimationFrame(frame);
 });

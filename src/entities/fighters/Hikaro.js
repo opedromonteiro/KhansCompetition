@@ -41,6 +41,9 @@ export class Hikaro extends Fighter {
             ['jump-roll-4', [[172, 983, 71, 121], [35, 121]]],
             ['jump-roll-5', [[172, 983, 71, 121], [35, 121]]],
             
+            ['crouch-1', [[174, 896, 65, 75], [33, 75]]],
+            ['crouch-2', [[428, 900, 65, 69], [33, 69]]],
+            ['crouch-3', [[345, 898, 68, 68], [34, 68]]],
         ]);
 
         this.animations = {
@@ -61,6 +64,13 @@ export class Hikaro extends Fighter {
             ],
             [FighterState.JUMP_BACKWARD]: [
                 ['jump-up-1', 180], ['jump-up-2',100], ['jump-up-3',180], ['jump-up-2',100], ['jump-up-1', -1],
+            ],
+            [FighterState.CROUCH]: [['crouch-3', 0]],
+            [FighterState.CROUCH_DOWN]: [
+                ['crouch-1', 30], ['crouch-2', 30], ['crouch-3', 30], ['crouch-3', -2],
+            ],
+            [FighterState.CROUCH_UP]: [
+                ['crouch-3', 30], ['crouch-2', 30], ['crouch-1', 30], ['crouch-1', -2],
             ],
         };
 

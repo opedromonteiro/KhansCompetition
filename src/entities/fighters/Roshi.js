@@ -40,6 +40,10 @@ export class Roshi extends Fighter {
             ['jump-roll-3', [[172, 983, 71, 121], [35, 121]]],
             ['jump-roll-4', [[172, 983, 71, 121], [35, 121]]],
             ['jump-roll-5', [[172, 983, 71, 121], [35, 121]]],
+
+            ['crouch-1', [[1063, 688, 77, 96], [36, 96]]],
+            ['crouch-2', [[912, 46, 66, 76], [33, 76]]],
+            ['crouch-3', [[1004, 52, 66, 70], [33, 70]]],
         ]);
 
         this.animations = {
@@ -60,6 +64,13 @@ export class Roshi extends Fighter {
             ],
             [FighterState.JUMP_BACKWARD]: [
                 ['jump-up-1', 180], ['jump-up-2',100], ['jump-up-3',180], ['jump-up-2',100], ['jump-up-1', -1],
+            ],
+            [FighterState.CROUCH]: [['crouch-3', 0]],
+            [FighterState.CROUCH_DOWN]: [
+                ['crouch-1', 60], ['crouch-2', 30], ['crouch-3', 30], ['crouch-3', -2],
+            ],
+            [FighterState.CROUCH_UP]: [
+                ['crouch-3', 60], ['crouch-2', 30], ['crouch-1', 30], ['crouch-1', -2],
             ],
         };
         

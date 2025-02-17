@@ -19,60 +19,97 @@ export class Fighter {
 
         this.states = {
             [FighterState.IDLE]:    {
-                init: this.handleWalkIdleInit.bind(this),
-                update: this.handleWalkIdleState.bind(this),
+                init: this.handleIdleInit.bind(this),
+                update: () => {},
+                validFrame: [
+                    undefined,
+                    FighterState.IDLE, FighterState.WALK_FORWARD, FighterState.WALK_BACKWARD,
+                    FighterState.JUMP_UP, FighterState.JUMP_FORWARD, FighterState.JUMP_BACKWARD,
+                    FighterState.CROUCH_UP,
+                ],
             },
             [FighterState.WALK_FORWARD]:    {
                 init: this.handleMoveInit.bind(this),
-                update: this.handleMoveState.bind(this),
+                update: () => {},
+                validFrame: [
+                    FighterState.IDLE, FighterState.WALK_BACKWARD,
+                ],
             },
             [FighterState.WALK_BACKWARD]:   {
                 init: this.handleMoveInit.bind(this),
-                update: this.handleMoveState.bind(this),
+                update: () => {},
+                validFrame: [
+                    FighterState.IDLE, FighterState.WALK_FORWARD,
+                ],
             },
             [FighterState.JUMP_UP]:   {
                 init: this.handleJumpInit.bind(this),
                 update: this.handleJumpState.bind(this),
+                validFrame: [FighterState.IDLE],
             },
             [FighterState.JUMP_FORWARD]:   {
                 init: this.handleJumpInit.bind(this),
                 update: this.handleJumpState.bind(this),
+                validFrame: [FighterState.IDLE, FighterState.WALK_FORWARD],
             },
             [FighterState.JUMP_BACKWARD]:   {
                 init: this.handleJumpInit.bind(this),
                 update: this.handleJumpState.bind(this),
+                validFrame: [FighterState.IDLE, FighterState.WALK_BACKWARD],
             },
-
-        }
-
+            [FighterState.CROUCH]:   {
+                init: () => {},
+                update: () => {},
+                validFrame: [FighterState.CROUCH_DOWN],
+            },
+            [FighterState.CROUCH_DOWN]:   {
+                init: () => {},
+                update: this.handleCrouchDownState.bind(this),
+                validFrame: [FighterState.IDLE, FighterState.WALK_FORWARD, FighterState.WALK_BACKWARD],
+            },
+            [FighterState.CROUCH_UP]:   {
+                init: () => {},
+                update: this.handleCrouchUpState.bind(this),
+                validFrame: [FighterState.CROUCH],
+            },
+        };
         this.changeState(FighterState.IDLE);
     }
 
     changeState(newState) {
+        if (newState === this.currentState
+            || !this.states[newState].validFrame.includes(this.currentState)) return;
+         
         this.currentState = newState;
         this.animationFrame = 0;
 
         this.states[this.currentState].init();
     }
 
-    handleWalkIdleInit() {
+    handleIdleInit() {
         this.velocity.x = 0;
         this.velocity.y = 0;
-    }
-
-    handleWalkIdleState() {
     }
 
     handleMoveInit() {
         this.velocity.x = this.initialVelocity.x[this.currentState];
     }
-
-    handleMoveState() {
-    }
     
     handleJumpInit() {
         this.velocity.y = this.initialVelocity.jump;
         this.handleMoveInit();
+    }
+
+    handleCrouchDownState() {
+        if (this.animations[this.currentState][this.animationFrame][1] === -2) {
+            this.changeState(FighterState.CROUCH);
+        }
+    }
+
+    handleCrouchUpState() {
+        if (this.animations[this.currentState][this.animationFrame][1] === -2) {
+            this.changeState(FighterState.IDLE);
+        }
     }
 
     handleJumpState(time) {

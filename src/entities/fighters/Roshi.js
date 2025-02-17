@@ -28,12 +28,52 @@ export class Roshi extends Fighter {
             ['backwards-3', [[253, 155, 79, 102], [40, 102]]],
             ['backwards-4', [[170, 155, 76, 101], [38, 101]]],
             ['backwards-5', [[494, 30, 63, 102], [32, 102]]],
+
+            // Jump Up
+            ['jump-up-1', [[172, 983, 71, 121], [35, 121]]],
+            ['jump-up-2', [[971, 1002, 67, 95], [33, 95]]],
+            ['jump-up-3', [[1063, 1000, 69, 72], [35, 72]]],
+            
+            // Jump Forwards/Backwards
+            ['jump-roll-1', [[752, 1511, 64, 99], [35, 121]]],
+            ['jump-roll-2', [[840, 1526, 65, 76], [35, 121]]],
+            ['jump-roll-3', [[172, 983, 71, 121], [35, 121]]],
+            ['jump-roll-4', [[172, 983, 71, 121], [35, 121]]],
+            ['jump-roll-5', [[172, 983, 71, 121], [35, 121]]],
         ]);
 
         this.animations = {
-            [FighterState.IDLE]: ['idle-1', 'idle-2', 'idle-3', 'idle-4', 'idle-5'],
-            [FighterState.WALK_FORWARD]: ['forwards-1', 'forwards-2', 'forwards-3', 'forwards-4', 'forwards-5'],
-            [FighterState.WALK_BACKWARD]: ['backwards-1', 'backwards-2', 'backwards-3', 'backwards-4', 'backwards-5'],
+            [FighterState.IDLE]: [
+                ['idle-1', 130], ['idle-2', 130], ['idle-3', 130], ['idle-4', 130], ['idle-5', 130],
+            ],
+            [FighterState.WALK_FORWARD]: [
+                ['forwards-1', 65], ['forwards-2', 65], ['forwards-3', 65], ['forwards-4', 65], ['forwards-5', 65],
+            ],
+            [FighterState.WALK_BACKWARD]: [
+                ['backwards-1', 65], ['backwards-2', 65], ['backwards-3', 65], ['backwards-4', 65], ['backwards-5', 65],
+            ],
+            [FighterState.JUMP_UP]: [
+                ['jump-up-1', 140], ['jump-up-2',120], ['jump-up-3',180], ['jump-up-2',120], ['jump-up-1', -1],
+            ],
+            [FighterState.JUMP_FORWARD]: [
+                ['jump-up-1', 180], ['jump-up-2',100], ['jump-up-3',180], ['jump-up-2',100], ['jump-up-1', -1],
+            ],
+            [FighterState.JUMP_BACKWARD]: [
+                ['jump-up-1', 180], ['jump-up-2',100], ['jump-up-3',180], ['jump-up-2',100], ['jump-up-1', -1],
+            ],
         };
+        
+        this.initialVelocity = {
+            x: {
+                [FighterState.WALK_FORWARD]: 200,
+                [FighterState.WALK_BACKWARD]: -150,
+                [FighterState.JUMP_UP]: 0,
+                [FighterState.JUMP_FORWARD]: 170,
+                [FighterState.JUMP_BACKWARD]: -200,
+            },
+            jump: -420,
+        };
+
+        this.gravity = 1000;
     }
 }

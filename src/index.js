@@ -41,8 +41,8 @@ window.addEventListener('load', function()  {
     context.imageSmoothingEnabled = false;
 
     const fighters = [
-        new Hikaro(104, STAGE_FLOOR, FighterDirection.LEFT),
-        new Roshi(280, STAGE_FLOOR, FighterDirection.RIGHT),
+        new Hikaro(280, STAGE_FLOOR, FighterDirection.LEFT),
+        new Roshi(104, STAGE_FLOOR, FighterDirection.RIGHT),
     ];
 
     const entities = [
